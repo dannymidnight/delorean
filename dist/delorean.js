@@ -1,4 +1,4 @@
-/*! delorean - v0.8.7 - 2014-11-29 */
+/*! delorean - v0.8.7 - 2014-12-10 */
 (function (DeLorean) {
   'use strict';
 
@@ -43,6 +43,18 @@
       return __findDispatcher(view._owner);
     }
     return view.props.dispatcher;
+  }
+
+  // `__clone` creates a copy of an object.
+  function __clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+      if (__hasOwn(obj, attr)) {
+        copy[attr] = obj[attr];
+      }
+    }
+    return copy;
   }
 
   // ## Dispatcher
@@ -224,7 +236,7 @@
       this.listener = new DeLorean.EventEmitter();
 
       /* Store is _hygenic_ object. DeLorean doesn't extend it, it uses it. */
-      this.store = store;
+      this.store = __clone(store);
       this.bindActions();
       this.buildScheme();
 
